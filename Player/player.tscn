@@ -26,3 +26,10 @@ skeleton = NodePath("../..")
 transform = Transform3D(0.599475, 0, 0.0250835, 0, 0.6, 0, -0.0250835, 0, 0.599475, 0.0315138, 1.6, -0.346217)
 material_override = SubResource("StandardMaterial3D_s1jn2")
 mesh = SubResource("SphereMesh_gvfg5")
+
+[node name="Extra" type="Node" parent="."]
+
+[node name="Timer" type="Timer" parent="Extra"]
+wait_time = 3.0
+
+[connection signal="timeout" from="Extra/Timer" to="." method="_on_timer_timeout"]

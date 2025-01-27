@@ -1,26 +1,26 @@
 extends CharacterBody3D 
 
 #Player Variables
-var current_speed = 0
-var walking_speed = 5.0
-var sprintSpeeds = 10.0
+var current_speed : float = 5.0
+var walking_speed : float = 5.0
+var sprintSpeeds  : float = 10.0
 
 #World Data
 var direction = Vector3.ZERO
-var sensitivity = 0.005
-var jump_velocity = 5.0
+var sensitivity : float = 0.005
+var jump_velocity : float = 5.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 #Import Variables
 @onready var overview_camera: Node3D = $"../OverviewCamera"
+@onready var timer: Timer = $Extra/Timer
 
 func _input(event):
 	if event.is_action_pressed("Sprint"):
 		current_speed = sprintSpeeds
-	else:
-		current_speed = walking_speed
-		
-  
+		timer.start()
+		print("Timer Start")
+
 #Physics and Player Movement
 func _physics_process(delta: float) -> void:
 		# Add the gravity.
@@ -55,3 +55,9 @@ func _on_camera_3d_update_camera_pos(ray: Variant, pos: Variant) -> void:
 	newlookatpos.y = global_position.y
 	if newlookatpos.distance_to(global_position) > 0.1:
 		look_at(newlookatpos)
+
+
+func _on_timer_timeout() -> void:
+	current_speed = walking_speed
+	timer.stop()
+	print("Timer Stop")
