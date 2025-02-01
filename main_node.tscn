@@ -60,7 +60,7 @@ player = NodePath("../../Player")
 [node name="Transition" parent="." instance=ExtResource("5_7tvok")]
 
 [node name="Enemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("6_ecx44")]
-transform = Transform3D(-0.8937, 0, -0.448664, 0, 1, 0, 0.448664, 0, -0.8937, 15.4503, 1, 22.8638)
+transform = Transform3D(0.0893639, 0, -0.995999, 0, 1, 0, 0.995999, 0, 0.0893639, 15.4503, 1, 22.8638)
 player = NodePath("../Base/Player")
 
 [connection signal="update_camera_pos" from="Base/OverviewCamera/Camera3D" to="Base/Player" method="_on_camera_3d_update_camera_pos"]
