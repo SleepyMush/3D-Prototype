@@ -21,6 +21,9 @@ func _input(event):
 		timer.start()
 		print("Timer Start")
 
+#func _process(delta: float) -> void:
+	#pass
+
 #Physics and Player Movement
 func _physics_process(delta: float) -> void:
 		# Add the gravity.

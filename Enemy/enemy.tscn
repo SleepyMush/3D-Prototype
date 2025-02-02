@@ -25,13 +25,13 @@ shape = SubResource("CapsuleShape3D_3to3j")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_gl1ob")
 
-[node name="Facing" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.590715, 0, 0, 0, 0.590715, 0, 0, 0, 0.590715, 0, 1.57253, -0.403823)
+[node name="Facing" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(0.590715, 0, 0, 0, 0.590715, 0, 0, 0, 0.590715, 0, 0.57253, -0.403823)
 material_override = SubResource("StandardMaterial3D_80hij")
 mesh = SubResource("SphereMesh_fja21")
+skeleton = NodePath("../..")
 
 [node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1.24765, 0, 0, 0, 1.24765, 0, 0, 0, 1.24765, 0, 1.04672, 0)

@@ -19,9 +19,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-	
+		
 	match current_state:
 		ENEMY_STATE.ENRAGE:
+			target_look()
 			print("Enrage")
 		ENEMY_STATE.SEEK:
 			global_position = lerp(global_position,player.global_position, current_speed * delta)
@@ -29,11 +30,16 @@ func _physics_process(delta: float) -> void:
 				current_speed = chase_speed
 				if timer.is_stopped():
 					timer.start()
+			target_look()
 			print("Seek_player")
 		ENEMY_STATE.IDLE:
 			print("Idle")
 	
 	move_and_slide()
+
+func target_look() -> void:
+		var target_angle = Vector2(player.global_position.z, player.global_position.x).angle_to_point(Vector2(global_position.z, global_position.x))
+		rotation.y = target_angle
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
@@ -43,7 +49,6 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body == player:
 		current_state = ENEMY_STATE.SEEK
-		#timer.start()
 
 func _on_timer_timeout() -> void:
 	current_state = ENEMY_STATE.IDLE
