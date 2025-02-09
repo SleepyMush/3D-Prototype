@@ -3,7 +3,10 @@ extends CharacterBody3D
 #Player Variables
 var current_speed : float = 5.0
 var walking_speed : float = 5.0
-var sprintSpeeds  : float = 10.0
+var sprintSpeeds  : float = 8.0
+
+var can_sprint: bool = true
+var sprint_timer: float = 2.0 # 2s between sprints
 
 #World Data
 var direction = Vector3.ZERO
@@ -11,18 +14,35 @@ var sensitivity : float = 0.005
 var jump_velocity : float = 5.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+@export var player_ref : ReferenceData
+@onready var health_node: Health_Node = $Health_Node
+var collider
+
 #Import Variables
 @onready var overview_camera: Node3D = $"../OverviewCamera"
-@onready var timer: Timer = $Extra/Timer
+@onready var ray_cast: RayCast3D = $Node3D/RayCast3D
+
+func _ready() -> void:
+	player_ref.ref= self
 
 func _input(event):
 	if event.is_action_pressed("Sprint"):
 		current_speed = sprintSpeeds
-		timer.start()
 		print("Timer Start")
-
-#func _process(delta: float) -> void:
-	#pass
+	
+	if event.is_action_released("Sprint"):
+		can_sprint = false
+		current_speed = walking_speed
+		await get_tree().create_timer(sprint_timer).timeout
+		can_sprint = true
+		print("timer stop")
+	
+	if event.is_action_pressed("Fire"):
+		if ray_cast.is_colliding():
+			collider = ray_cast.get_collider()
+			print(collider)
+			if collider is hittable:
+				collider.hit(10)
 
 #Physics and Player Movement
 func _physics_process(delta: float) -> void:
@@ -59,8 +79,6 @@ func _on_camera_3d_update_camera_pos(ray: Variant, pos: Variant) -> void:
 	if newlookatpos.distance_to(global_position) > 0.1:
 		look_at(newlookatpos)
 
-
-func _on_timer_timeout() -> void:
-	current_speed = walking_speed
-	timer.stop()
-	print("Timer Stop")
+func _on_damage_taken(damage_amount: float) -> void:
+	health_node.damage_taken(damage_amount)
+	print("player_damage ", damage_amount)

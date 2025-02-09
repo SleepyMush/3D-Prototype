@@ -1,14 +1,17 @@
+class_name Enemy
 extends CharacterBody3D
 
-# Add chase logic and ENrage logic, and what to do when they idle again
+# Enrage and Chase works, now to figure out idle
 var current_speed : float = 0.100
 var chase_speed   : float = 1.0
 
 var distance_chased_from : float = 0.100
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@export var player : CharacterBody3D
+#var player : CharacterBody3D  = GlobalVar.player
+var player_ref : ReferenceData = preload("res://Resource/Player_ref.tres")
 @onready var timer: Timer = $Node/Timer
+@onready var health_node: Health_Node = $Health_Node
 
 enum ENEMY_STATE {IDLE, ENRAGE, SEEK}
 var current_state : int = 0
@@ -23,33 +26,36 @@ func _physics_process(delta: float) -> void:
 	match current_state:
 		ENEMY_STATE.ENRAGE:
 			target_look()
-			print("Enrage")
 		ENEMY_STATE.SEEK:
-			global_position = lerp(global_position,player.global_position, current_speed * delta)
-			if player.global_position.distance_to(global_position) >= distance_chased_from:
+			global_position = lerp(global_position, player_ref.ref.global_position, current_speed * delta)
+			if player_ref.ref.global_position.distance_to(global_position) >= distance_chased_from:
 				current_speed = chase_speed
 				if timer.is_stopped():
 					timer.start()
 			target_look()
-			print("Seek_player")
 		ENEMY_STATE.IDLE:
-			print("Idle")
+			pass
 	
 	move_and_slide()
 
 func target_look() -> void:
-		var target_angle = Vector2(player.global_position.z, player.global_position.x).angle_to_point(Vector2(global_position.z, global_position.x))
+		var target_angle = Vector2(player_ref.ref.global_position.z, player_ref.ref.global_position.x).angle_to_point(Vector2(global_position.z, global_position.x))
 		rotation.y = target_angle
 
-
+#have a way
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body == player:
+	if body ==  player_ref.ref:
 		current_state = ENEMY_STATE.ENRAGE
+		
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
-	if body == player:
+	if body ==  player_ref.ref:
 		current_state = ENEMY_STATE.SEEK
 
 func _on_timer_timeout() -> void:
 	current_state = ENEMY_STATE.IDLE
 	timer.stop()
+
+func _on_damage_taken(damage_amount: float) -> void:
+	health_node.damage_taken(damage_amount)
+	print("Enemy_damage ", damage_amount)

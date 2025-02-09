@@ -1,6 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cf7qajeecyxvx"]
+[gd_scene load_steps=10 format=3 uid="uid://cf7qajeecyxvx"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_b4m7c"]
+[ext_resource type="Resource" uid="uid://bwiwotrkkr6hf" path="res://Resource/Player_ref.tres" id="2_qioif"]
+[ext_resource type="Script" path="res://health.gd" id="3_tgpby"]
+[ext_resource type="Script" path="res://Enemy/Hitbox.gd" id="4_sku2e"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7sf2m"]
 
@@ -11,8 +14,15 @@ albedo_color = Color(0.277528, 0.277528, 0.277528, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_gvfg5"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s8jyf"]
+radius = 1.0
+
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+floor_constant_speed = true
+floor_max_angle = 0.959931
 script = ExtResource("1_b4m7c")
+player_ref = ExtResource("2_qioif")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -27,9 +37,25 @@ transform = Transform3D(0.599475, 0, 0.0250835, 0, 0.6, 0, -0.0250835, 0, 0.5994
 material_override = SubResource("StandardMaterial3D_s1jn2")
 mesh = SubResource("SphereMesh_gvfg5")
 
-[node name="Extra" type="Node" parent="."]
+[node name="Health_Node" type="Node" parent="."]
+script = ExtResource("3_tgpby")
+max_health = 100.0
 
-[node name="Timer" type="Timer" parent="Extra"]
-wait_time = 3.0
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0)
 
-[connection signal="timeout" from="Extra/Timer" to="." method="_on_timer_timeout"]
+[node name="RayCast3D" type="RayCast3D" parent="Node3D"]
+target_position = Vector3(0, -10, 0)
+collision_mask = 5
+collide_with_areas = true
+
+[node name="Area3D2" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("4_sku2e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00589395, 1.02783, -0.0242114)
+shape = SubResource("CapsuleShape3D_s8jyf")
+
+[connection signal="damage_taken" from="Area3D2" to="." method="_on_damage_taken"]

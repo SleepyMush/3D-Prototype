@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://uu82xlr5wjpv"]
+[gd_scene load_steps=10 format=3 uid="uid://uu82xlr5wjpv"]
 
 [ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_ef0le"]
+[ext_resource type="Script" path="res://health.gd" id="2_opue3"]
+[ext_resource type="Script" path="res://Enemy/Hitbox.gd" id="3_vb5yq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3to3j"]
 
@@ -13,6 +15,9 @@ albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ywtll"]
 radius = 2.70153
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mbn7r"]
+radius = 1.0
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_ef0le")
@@ -32,6 +37,8 @@ mesh = SubResource("SphereMesh_fja21")
 skeleton = NodePath("../..")
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1.24765, 0, 0, 0, 1.24765, 0, 0, 0, 1.24765, 0, 1.04672, 0)
@@ -42,6 +49,20 @@ shape = SubResource("SphereShape3D_ywtll")
 [node name="Timer" type="Timer" parent="Node"]
 wait_time = 5.0
 
+[node name="Health_Node" type="Node" parent="."]
+script = ExtResource("2_opue3")
+max_health = 100.0
+
+[node name="Area3D2" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_vb5yq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00589395, 1.02783, -0.0242114)
+shape = SubResource("CapsuleShape3D_mbn7r")
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="timeout" from="Node/Timer" to="." method="_on_timer_timeout"]
+[connection signal="damage_taken" from="Area3D2" to="." method="_on_damage_taken"]
