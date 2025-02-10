@@ -45,7 +45,7 @@ max_health = 100.0
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="Node3D"]
-target_position = Vector3(0, -10, 0)
+target_position = Vector3(0, -15, 0)
 collision_mask = 5
 collide_with_areas = true
 

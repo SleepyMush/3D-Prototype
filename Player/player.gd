@@ -22,6 +22,9 @@ var collider
 @onready var overview_camera: Node3D = $"../OverviewCamera"
 @onready var ray_cast: RayCast3D = $Node3D/RayCast3D
 
+enum PLAYER_STATE {IDLE, WALKING, RUNNING}
+var current_state : int = 0
+
 func _ready() -> void:
 	player_ref.ref= self
 

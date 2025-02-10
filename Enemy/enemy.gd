@@ -13,7 +13,7 @@ var player_ref : ReferenceData = preload("res://Resource/Player_ref.tres")
 @onready var timer: Timer = $Node/Timer
 @onready var health_node: Health_Node = $Health_Node
 
-enum ENEMY_STATE {IDLE, ENRAGE, SEEK}
+enum ENEMY_STATE {IDLE, ENRAGE, SEEK, DEAD}
 var current_state : int = 0
 
 func _ready() -> void:
@@ -26,6 +26,7 @@ func _physics_process(delta: float) -> void:
 	match current_state:
 		ENEMY_STATE.ENRAGE:
 			target_look()
+			
 		ENEMY_STATE.SEEK:
 			global_position = lerp(global_position, player_ref.ref.global_position, current_speed * delta)
 			if player_ref.ref.global_position.distance_to(global_position) >= distance_chased_from:
@@ -33,8 +34,13 @@ func _physics_process(delta: float) -> void:
 				if timer.is_stopped():
 					timer.start()
 			target_look()
+			
 		ENEMY_STATE.IDLE:
 			pass
+			
+		ENEMY_STATE.DEAD:
+			if health_node.health == 0:
+				queue_free()
 	
 	move_and_slide()
 
@@ -59,3 +65,7 @@ func _on_timer_timeout() -> void:
 func _on_damage_taken(damage_amount: float) -> void:
 	health_node.damage_taken(damage_amount)
 	print("Enemy_damage ", damage_amount)
+	
+	if health_node.health <= 0:
+		current_state = ENEMY_STATE.DEAD
+	
