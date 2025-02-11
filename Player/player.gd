@@ -7,7 +7,7 @@ var walking_speed : float = 5.0
 var sprintSpeeds  : float = 8.0
 
 var can_sprint: bool = true
-var sprint_timer: float = 2.0 # 2s between sprints
+var sprint_timer: float = 4.0 # 2s between sprints
 
 #World Data
 var direction = Vector3.ZERO
@@ -22,14 +22,13 @@ var collider
 #Import Variables
 @onready var overview_camera: Node3D = $"../OverviewCamera"
 @onready var ray_cast: RayCast3D = $Node3D/RayCast3D
-
-enum PLAYER_STATE {IDLE, WALKING, RUNNING}
-var current_state : int = 0
+@onready var health_bar: ProgressBar = $"Control/HealthBar"
 
 signal got_hit(damage_taken : float)
 
 func _ready() -> void:
 	player_ref.ref= self
+	health_bar.value = health_node.health
 
 func _input(event):
 	if event.is_action_pressed("Sprint"):
@@ -57,7 +56,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= gravity * delta
 		
 		# Handle Jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = jump_velocity
 	
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Backward")
@@ -89,3 +88,7 @@ func hit(value: float) -> void:
 	health_node.take_damage(value)
 	print("Player ", value)
 	emit_signal("got_hit", value)
+
+
+func _on_health_node_health_changed(health: float) -> void:
+	health_bar.value = health
