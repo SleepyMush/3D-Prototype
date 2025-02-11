@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cf7qajeecyxvx"]
+[gd_scene load_steps=9 format=3 uid="uid://cf7qajeecyxvx"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_b4m7c"]
 [ext_resource type="Resource" uid="uid://bwiwotrkkr6hf" path="res://Resource/Player_ref.tres" id="2_qioif"]
-[ext_resource type="Script" path="res://health.gd" id="3_tgpby"]
-[ext_resource type="Script" path="res://Enemy/Hitbox.gd" id="4_sku2e"]
+[ext_resource type="Script" path="res://health.gd" id="3_w3dqu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7sf2m"]
 
@@ -14,7 +13,7 @@ albedo_color = Color(0.277528, 0.277528, 0.277528, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_gvfg5"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s8jyf"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6knbn"]
 radius = 1.0
 
 [node name="Player" type="CharacterBody3D"]
@@ -38,7 +37,7 @@ material_override = SubResource("StandardMaterial3D_s1jn2")
 mesh = SubResource("SphereMesh_gvfg5")
 
 [node name="Health_Node" type="Node" parent="."]
-script = ExtResource("3_tgpby")
+script = ExtResource("3_w3dqu")
 max_health = 100.0
 
 [node name="Node3D" type="Node3D" parent="."]
@@ -49,13 +48,10 @@ target_position = Vector3(0, -15, 0)
 collision_mask = 5
 collide_with_areas = true
 
-[node name="Area3D2" type="Area3D" parent="."]
-collision_layer = 2
-collision_mask = 4
-script = ExtResource("4_sku2e")
+[node name="Hitbox" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00589395, 1.02783, -0.0242114)
-shape = SubResource("CapsuleShape3D_s8jyf")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_6knbn")
 
-[connection signal="damage_taken" from="Area3D2" to="." method="_on_damage_taken"]
+[connection signal="damage_taken" from="Health_Node" to="." method="_on_health_node_damage_taken"]

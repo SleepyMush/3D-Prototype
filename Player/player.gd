@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody3D 
 
 #Player Variables
@@ -25,6 +26,8 @@ var collider
 enum PLAYER_STATE {IDLE, WALKING, RUNNING}
 var current_state : int = 0
 
+signal got_hit(damage_taken : float)
+
 func _ready() -> void:
 	player_ref.ref= self
 
@@ -44,8 +47,8 @@ func _input(event):
 		if ray_cast.is_colliding():
 			collider = ray_cast.get_collider()
 			print(collider)
-			if collider is hittable:
-				collider.hit(10)
+			if collider.get_parent() is Enemy:
+				collider.get_parent().hit(10)
 
 #Physics and Player Movement
 func _physics_process(delta: float) -> void:
@@ -82,6 +85,7 @@ func _on_camera_3d_update_camera_pos(ray: Variant, pos: Variant) -> void:
 	if newlookatpos.distance_to(global_position) > 0.1:
 		look_at(newlookatpos)
 
-func _on_damage_taken(damage_amount: float) -> void:
-	health_node.damage_taken(damage_amount)
-	print("player_damage ", damage_amount)
+func hit(value: float) -> void:
+	health_node.take_damage(value)
+	print("Player ", value)
+	emit_signal("got_hit", value)

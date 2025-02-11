@@ -8,6 +8,12 @@ func _ready() -> void:
 	transition.play("Fade_In")
 	spawn_markers()
 
+#Close the game
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_ESCAPE:
+			get_tree().quit()
+
 func spawn_markers() :
 	# Spawn location of enemy
 	markers = get_tree().get_nodes_in_group("markers")
@@ -16,10 +22,3 @@ func spawn_markers() :
 		print( markers.pick_random())
 		enemy.position = marker.position
 		add_child(enemy)
-
-
-#Close the game
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_ESCAPE:
-			get_tree().quit()

@@ -16,6 +16,8 @@ var player_ref : ReferenceData = preload("res://Resource/Player_ref.tres")
 enum ENEMY_STATE {IDLE, ENRAGE, SEEK, DEAD}
 var current_state : int = 0
 
+signal got_hit(damage_taken : float)
+
 func _ready() -> void:
 	current_state = ENEMY_STATE.IDLE
 
@@ -36,9 +38,11 @@ func _physics_process(delta: float) -> void:
 			target_look()
 			
 		ENEMY_STATE.IDLE:
+#			Seriously, what should i add here
 			pass
 			
 		ENEMY_STATE.DEAD:
+#			IDK, play dead animation and spawn in a model
 			if health_node.health == 0:
 				queue_free()
 	
@@ -50,8 +54,10 @@ func target_look() -> void:
 
 #have a way
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body ==  player_ref.ref:
+	print(body)
+	if body is Player:
 		current_state = ENEMY_STATE.ENRAGE
+		body.hit(10)
 		
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
@@ -62,10 +68,12 @@ func _on_timer_timeout() -> void:
 	current_state = ENEMY_STATE.IDLE
 	timer.stop()
 
-func _on_damage_taken(damage_amount: float) -> void:
-	health_node.damage_taken(damage_amount)
-	print("Enemy_damage ", damage_amount)
+
+func hit(value: float) -> void:
+	health_node.take_damage(value)
+	print("Enemy_damage ", value)
+	
+	emit_signal("got_hit", value)
 	
 	if health_node.health <= 0:
 		current_state = ENEMY_STATE.DEAD
-	

@@ -6,8 +6,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wckuj"]
 render_priority = 0
 shader = ExtResource("2_n2r10")
-shader_parameter/line_width = 1.0
-shader_parameter/line_length = 1.0
+shader_parameter/line_width = 0.1
+shader_parameter/line_length = 0.1
 shader_parameter/correct_uv = true
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/brightness = 1.0
