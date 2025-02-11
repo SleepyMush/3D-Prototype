@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cf7qajeecyxvx"]
+[gd_scene load_steps=9 format=3 uid="uid://cf7qajeecyxvx"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_b4m7c"]
-[ext_resource type="Resource" uid="uid://bwiwotrkkr6hf" path="res://Resource/Player_ref.tres" id="2_qioif"]
 [ext_resource type="Script" path="res://health.gd" id="3_w3dqu"]
 [ext_resource type="PackedScene" uid="uid://dtlwshu5g3pv" path="res://UI/Health_Scene.tscn" id="4_pgxug"]
 
@@ -22,7 +21,6 @@ collision_layer = 2
 floor_constant_speed = true
 floor_max_angle = 0.959931
 script = ExtResource("1_b4m7c")
-player_ref = ExtResource("2_qioif")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

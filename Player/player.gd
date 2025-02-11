@@ -15,7 +15,6 @@ var sensitivity : float = 0.005
 var jump_velocity : float = 5.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@export var player_ref : ReferenceData
 @onready var health_node: Health_Node = $Health_Node
 var collider
 
@@ -27,7 +26,6 @@ var collider
 signal got_hit(damage_taken : float)
 
 func _ready() -> void:
-	player_ref.ref= self
 	health_bar.value = health_node.health
 
 func _input(event):

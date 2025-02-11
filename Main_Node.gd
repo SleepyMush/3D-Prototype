@@ -19,6 +19,7 @@ func spawn_markers() :
 	markers = get_tree().get_nodes_in_group("markers")
 	for marker in markers:
 		var enemy = ENEMY.instantiate()
+		enemy.player = $Base/Player
 		print( markers.pick_random())
 		enemy.position = marker.position
 		add_child(enemy)
