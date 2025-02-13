@@ -18,8 +18,7 @@ func take_damage(value : float):
 	emit_signal("health_changed", health)
 	if health > 0:
 		print("taken ", value,  " damage ", health, " remaining.")
-	else:
-		#get_parent().visible = false
+	elif health <=0:
 		emit_signal("died", died)
 		print("die")
 
@@ -27,3 +26,4 @@ func heal(value : float):
 	health = clamp(health + value, 0 , max_health)
 	emit_signal("healed", value)
 	emit_signal("health_changed", health)
+	print("heal")

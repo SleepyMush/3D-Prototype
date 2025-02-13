@@ -2,11 +2,14 @@ extends Node
 
 @onready var transition: AnimationPlayer = $Transition
 const ENEMY = preload("res://Enemy/enemy.tscn")
+const MEDICAL_PACKS = preload("res://Components/Medical_pack.tscn")
 var markers: Array[Node] 
+var markers_medic: Array[Node] 
 
 func _ready() -> void:
 	transition.play("Fade_In")
 	spawn_markers()
+	Spawn_Medic_Markers()
 
 #Close the game
 func _unhandled_input(event: InputEvent) -> void:
@@ -20,6 +23,12 @@ func spawn_markers() :
 	for marker in markers:
 		var enemy = ENEMY.instantiate()
 		enemy.player = $Base/Player
-		print( markers.pick_random())
 		enemy.position = marker.position
 		add_child(enemy)
+
+func Spawn_Medic_Markers() :
+	markers_medic = get_tree().get_nodes_in_group("Medic_packs")
+	for marker in markers_medic:
+		var medic = MEDICAL_PACKS.instantiate()
+		medic.position = marker.position
+		add_child(medic)

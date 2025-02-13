@@ -87,6 +87,5 @@ func hit(value: float) -> void:
 	print("Player ", value)
 	emit_signal("got_hit", value)
 
-
 func _on_health_node_health_changed(health: float) -> void:
 	health_bar.value = health

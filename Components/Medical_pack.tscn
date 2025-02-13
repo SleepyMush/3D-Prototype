@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://hbpjdamoo5qk"]
+
+[ext_resource type="Script" path="res://med_pick.gd" id="1_ueubb"]
+[ext_resource type="Texture2D" uid="uid://d3alpx6vniq00" path="res://icon.svg" id="2_4h8w6"]
+[ext_resource type="PackedScene" uid="uid://kyytoxxa6ry7" path="res://Components/health.tscn" id="3_ahn4j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jare4"]
+albedo_texture = ExtResource("2_4h8w6")
+
+[sub_resource type="BoxMesh" id="BoxMesh_e8ekk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_072k4"]
+
+[node name="Medical-pack" type="Node3D"]
+script = ExtResource("1_ueubb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_jare4")
+mesh = SubResource("BoxMesh_e8ekk")
+
+[node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
+shape = SubResource("BoxShape3D_072k4")
+
+[node name="Health" parent="." instance=ExtResource("3_ahn4j")]
+
+[connection signal="body_entered" from="MeshInstance3D/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="healed" from="Health" to="." method="_on_health_healed"]
