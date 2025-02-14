@@ -3,6 +3,7 @@ extends Node
 @onready var transition: AnimationPlayer = $Transition
 const ENEMY = preload("res://Enemy/enemy.tscn")
 const MEDICAL_PACKS = preload("res://Components/Medical_pack.tscn")
+var MENU = load("res://UI/menu.tscn")
 var markers: Array[Node] 
 var markers_medic: Array[Node] 
 
@@ -15,7 +16,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed and event.keycode == KEY_ESCAPE:
-			get_tree().quit()
+			get_tree().change_scene_to_file("res://UI/menu.tscn")
 
 func spawn_markers() :
 	# Spawn location of enemy

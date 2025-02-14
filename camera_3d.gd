@@ -3,7 +3,6 @@ extends Camera3D
 @export var player : NodePath
 @export var weight : float = 0.5
 @onready var overview_camera: Node3D = $".."
-
 signal update_camera_pos(ray, pos)
 
 #Sets the process to true
