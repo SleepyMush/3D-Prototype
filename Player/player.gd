@@ -22,11 +22,13 @@ var collider
 @onready var overview_camera: Node3D = $"../OverviewCamera"
 @onready var ray_cast: RayCast3D = $Node3D/RayCast3D
 @onready var health_bar: ProgressBar = $"Control/HealthBar"
+@onready var Retry: Control = $Control2
 
 signal got_hit(damage_taken : float)
 
 func _ready() -> void:
 	health_bar.value = health_node.health
+	Retry.visible = false
 
 func _input(event):
 	if event.is_action_pressed("Sprint"):
@@ -89,3 +91,7 @@ func hit(value: float) -> void:
 
 func _on_health_node_health_changed(health: float) -> void:
 	health_bar.value = health
+
+func _on_health_node_died() -> void:
+	get_tree().paused = true
+	Retry.visible = true

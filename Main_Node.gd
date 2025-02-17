@@ -33,3 +33,8 @@ func Spawn_Medic_Markers() :
 		var medic = MEDICAL_PACKS.instantiate()
 		medic.position = marker.position
 		add_child(medic)
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if body is Player:
+		get_tree().reload_current_scene()

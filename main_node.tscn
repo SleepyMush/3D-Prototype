@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://difxgway0yog3"]
+[gd_scene load_steps=11 format=3 uid="uid://difxgway0yog3"]
 
 [ext_resource type="Script" path="res://Main_Node.gd" id="1_7wpcd"]
 [ext_resource type="MeshLibrary" uid="uid://tl3cfwuawslx" path="res://Block_type.tres" id="2_tj657"]
@@ -19,6 +19,9 @@ background_mode = 2
 sky = SubResource("Sky_1ynkg")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vyhjl"]
+size = Vector3(32.1163, 1, 29.6497)
 
 [node name="Main Node" type="Node"]
 script = ExtResource("1_7wpcd")
@@ -86,4 +89,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.8122, 5.94462, 27.1261)
 [node name="Test_asset" parent="Node3D" instance=ExtResource("6_3pt8k")]
 transform = Transform3D(0.537944, 0, 0, 0, 0.537944, 0, 0, 0, 0.537944, -1.41412, 1.70714, -0.67146)
 
+[node name="Area_Reset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -16.3215, 0)
+
+[node name="Area3D" type="Area3D" parent="Area_Reset"]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area_Reset/Area3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 5.44159, 0, 15.1861)
+shape = SubResource("BoxShape3D_vyhjl")
+
 [connection signal="update_camera_pos" from="Base/OverviewCamera/Camera3D" to="Base/Player" method="_on_camera_3d_update_camera_pos"]
+[connection signal="body_entered" from="Area_Reset/Area3D" to="." method="_on_area_3d_body_entered"]

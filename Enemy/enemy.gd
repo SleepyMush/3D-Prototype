@@ -11,11 +11,14 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var player : Player 
 @onready var timer: Timer = $Node/Timer
 @onready var health_node: Health_Node = $Health_Node
+@onready var Attack_timer: Timer = $Attack_Timer/Timer
 
 enum ENEMY_STATE {IDLE, ENRAGE, SEEK, DEAD}
 var current_state : int = 0
 
 signal got_hit(damage_taken : float)
+
+var damage: float = 10.0
 
 func _ready() -> void:
 	current_state = ENEMY_STATE.IDLE
@@ -37,11 +40,9 @@ func _physics_process(delta: float) -> void:
 			target_look()
 			
 		ENEMY_STATE.IDLE:
-#			Seriously, what should i add here
 			pass
 			
 		ENEMY_STATE.DEAD:
-#			IDK, play dead animation and spawn in a model
 			if health_node.health == 0:
 				queue_free()
 	
@@ -53,20 +54,22 @@ func target_look() -> void:
 
 #have a way
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	print(body)
 	if body is Player:
+		player = body
 		current_state = ENEMY_STATE.ENRAGE
-		body.hit(10)
-		
+		player.hit(damage)
+		Attack_timer.start()
+		print("Attack_Timer start")
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body ==  player:
 		current_state = ENEMY_STATE.SEEK
+		Attack_timer.stop()
+		print("Attack_timer finished")
 
 func _on_timer_timeout() -> void:
 	current_state = ENEMY_STATE.IDLE
 	timer.stop()
-
 
 func hit(value: float) -> void:
 	health_node.take_damage(value)
@@ -76,3 +79,9 @@ func hit(value: float) -> void:
 	
 	if health_node.health <= 0:
 		current_state = ENEMY_STATE.DEAD
+
+func _on_Attack_timeout() -> void:
+	player.hit(damage)
+
+#Figure out a way to get the enemy not to hit the player when leaving the areea body, at the moment this causes undefined behaviour
+#And read more about timers and signals

@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cf7qajeecyxvx"]
+[gd_scene load_steps=10 format=3 uid="uid://cf7qajeecyxvx"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_b4m7c"]
 [ext_resource type="Script" path="res://health.gd" id="3_w3dqu"]
+[ext_resource type="PackedScene" uid="uid://3hxershdheks" path="res://UI/Retry.tscn" id="4_hw84m"]
 [ext_resource type="PackedScene" uid="uid://dtlwshu5g3pv" path="res://UI/Health_Scene.tscn" id="4_pgxug"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7sf2m"]
@@ -54,6 +55,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_6knbn")
 
 [node name="Control" parent="." instance=ExtResource("4_pgxug")]
+
+[node name="Control2" parent="." instance=ExtResource("4_hw84m")]
+process_mode = 3
 
 [connection signal="damage_taken" from="Health_Node" to="." method="_on_health_node_damage_taken"]
 [connection signal="died" from="Health_Node" to="." method="_on_health_node_died"]

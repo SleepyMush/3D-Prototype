@@ -19,7 +19,7 @@ func take_damage(value : float):
 	if health > 0:
 		print("taken ", value,  " damage ", health, " remaining.")
 	elif health <=0:
-		emit_signal("died", died)
+		emit_signal("died")
 		print("die")
 
 func heal(value : float):
