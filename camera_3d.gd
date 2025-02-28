@@ -1,12 +1,20 @@
 extends Camera3D
 
-@export var player : NodePath
-@export var weight : float = 0.5
+@export var player : Player
+var Direction : Vector3
 @onready var overview_camera: Node3D = $".."
 signal update_camera_pos(ray, pos)
+@onready var camera_3d: Camera3D = $"."
+
+var Near: float = 0.001
+var Far: float = 4000
+var Size: float = 20
 
 #Sets the process to true
 func _ready() -> void:
+	Direction = player.global_position - camera_3d.global_position 
+	camera_3d.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera_3d.set_orthogonal(Size, Near, Far)
 	set_process(true)
 
 #Input for the camera, to look into the scene and cast a ray, or i think
@@ -18,7 +26,6 @@ func _input(event: InputEvent) -> void:
 		update_camera_pos.emit(-camera.global_transform.basis.z, ray)
 
 #Follow Enitiy Code
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if player:
-		var player_node = get_node(player)
-		global_position = lerp(overview_camera.global_position, player_node.global_position, weight)
+		global_position =  player.global_position - Direction

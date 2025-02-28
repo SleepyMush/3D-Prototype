@@ -34,8 +34,7 @@ func _input(event):
 	if event.is_action_pressed("Sprint"):
 		current_speed = sprintSpeeds
 		print("Timer Start")
-	
-	if event.is_action_released("Sprint"):
+	elif event.is_action_released("Sprint"):
 		can_sprint = false
 		current_speed = walking_speed
 		await get_tree().create_timer(sprint_timer).timeout
@@ -75,9 +74,9 @@ func _on_camera_3d_update_camera_pos(ray: Variant, pos: Variant) -> void:
 	var height = pos.y - global_position.y
 	var adjusted_pos : Vector3 = pos
 	adjusted_pos.y = global_position.y
-	var lenght = adjusted_pos.distance_to(global_position)
+	var length = adjusted_pos.distance_to(global_position)
 	
-	var raylenght = pow(height, 2) + pow(lenght, 2)
+	var raylenght = pow(height, 2) + pow(length, 2)
 	raylenght = sqrt(raylenght)
 	var newlookatpos = pos + ray * raylenght
 	newlookatpos.y = global_position.y

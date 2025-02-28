@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cf7qajeecyxvx"]
+[gd_scene load_steps=11 format=3 uid="uid://cf7qajeecyxvx"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_b4m7c"]
 [ext_resource type="Script" path="res://health.gd" id="3_w3dqu"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dtlwshu5g3pv" path="res://UI/Health_Scene.tscn" id="4_pgxug"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7sf2m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0j2cq"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_s1wn8"]
 
@@ -28,6 +30,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_7sf2m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+material_override = SubResource("ShaderMaterial_0j2cq")
 mesh = SubResource("CapsuleMesh_s1wn8")
 skeleton = NodePath("../..")
 
